@@ -107,12 +107,4 @@ def exit():
 
 
 if __name__ == "__main__":
-    p1 = Controller()
-    p2 = Controller(gamepad_id=2)
-    while True:
-        matrix = cap.grab()
-        print(matrix)
-        time.sleep(1.5)
-    p1.press_buttons({"left": 1, "a": 1})
-    
     main()

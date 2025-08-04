@@ -5,7 +5,7 @@ import mss
 from PIL import Image
 import numpy as np
 
-class WindowCapture:
+class WindowCapture():
     def __init__(self, title):
         self.title = title
         self.sct = mss.mss()
