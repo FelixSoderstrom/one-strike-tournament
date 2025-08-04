@@ -10,7 +10,7 @@ from src.screen_capturer import WindowCapture
 from src.game_loop import GameLoop
 
 
-cap = WindowCapture("Desktop")
+cap = WindowCapture("Discord")
 
 def main():
     routes = {
@@ -109,9 +109,10 @@ def exit():
 if __name__ == "__main__":
     p1 = Controller()
     p2 = Controller(gamepad_id=2)
-    matrix = cap.grab()
-    print(matrix)
+    while True:
+        matrix = cap.grab()
+        print(matrix)
+        time.sleep(1.5)
     p1.press_buttons({"left": 1, "a": 1})
-    time.sleep(1.5)
     
     main()
