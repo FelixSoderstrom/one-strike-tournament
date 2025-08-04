@@ -2,8 +2,8 @@ import sys
 import asyncio
 from time import sleep
 
-from src.controller import Controller
-from src.screen_capturer import ScreenCapturer
+#from src.controller import Controller
+#from src.screen_capturer import ScreenCapturer
 
 class GameLoop:
     def __init__(self, p1, p2):
