@@ -1,8 +1,8 @@
 import sys
 import asyncio
+import time
 from time import sleep
 
-from src.controller import Controller
 from src.screen_capturer import WindowCapture
 
 class GameLoop:
@@ -15,7 +15,7 @@ class GameLoop:
 
         self.running = False
         self.game_over = False
-
+        self.current_state = None 
 
 
     def idle_loop(self):
@@ -31,6 +31,20 @@ class GameLoop:
             if self.running:
                 asyncio.run(self._active_loop())
 
+    def navigate_menu(self):
+        while self.current_state != "character_select":
+            if self.screen_capturer.detect_main_menu():
+                self.controller.from_main_menu_to_character_select()
+                if self.screen_capturer.detect_character_select():
+                    self.current_state = "character_select"
+            elif self.screen_capturer.detect_character_select():
+                self.current_state = "character_select"
+            else:
+                print("Unknown screen detected: moving to main menu")
+                self.controller.from_unknown_screen_to_main_menu()
+
+
+        
     async def _active_loop(self):
         await asyncio.gather(
             self._refresh_screen(),
@@ -56,3 +70,52 @@ class GameLoop:
 
 
             
+
+class CharacterSelector:
+    @staticmethod
+    def navigate_to_character(self, target_character, controller, player_position):
+        moves = CharacterSelector._get_character_navigation(target_character, player_position)
+        CharacterSelector._execute_move_sequence(moves, controller)
+        controller.press_button("a")
+
+    @staticmethod
+    def _execute_move_sequence(self, moves, controller):
+        for move in moves:
+            controller.press_button(move)
+            time.sleep(0.05)
+            controller.release_button(move)
+            time.sleep(0.05)
+
+    @staticmethod
+    def _get_character_navigation(self, target_character, player_position):
+
+        character_positions = {
+            "Kenji": (0, 0),
+            "Tomoe": (0, 1),
+            "Bailong": (0, 2),
+            "Oni": (0, 3),
+            "Soujirou": (1, 0), 
+            "Hangaku": (1, 1),
+            "Hinode": (1, 2)
+        }
+        
+        starting_positions = {
+            "p1": (0, 0),
+            "p2": (1, 0),
+        }
+
+        start_pos = starting_positions[player_position]
+        target_pos = character_positions[target_character]
+
+        row_diff = target_pos[0] - start_pos[0]
+        col_diff = target_pos[1] - start_pos[1]
+
+        moves = []
+        if row_diff > 0:
+            moves.extend(["down"] * row_diff)
+        if col_diff > 0:
+            moves.extend(["right"] * col_diff)
+        elif col_diff < 0:
+            moves.extend(["left"] * abs(col_diff))
+
+        return moves

@@ -1,5 +1,5 @@
 def action():
-    
+
     return {
         "left": True,
         "right": True,
@@ -8,3 +8,5 @@ def action():
         "L": True,
         "R": True,
     }
+
+CHARACTER_CHOICE = "Bailong"

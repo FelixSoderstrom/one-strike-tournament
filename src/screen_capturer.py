@@ -46,7 +46,42 @@ class WindowCapture():
         r, g, b = [int(v) for v in pixel_rgb]
         if abs(r - 228) + abs(g - 255) + abs(b - 0) < threshold:
             return True
+    
+    def detect_white_pixel(self, img, x, y, threshold=20):
+        pixel_rgb = img[y, x]  # For pixel at (x, y)
+        r, g, b = [int(v) for v in pixel_rgb]
+        if abs(r - 255) + abs(g - 255) + abs(b - 255) < threshold:
+            return True
+        else:
+            return False
+    
+    def detect_orange_pixel(self, img, x, y, threshold=20):
+        pixel_rgb = img[y, x]  # For pixel at (x, y)
+        r, g, b = [int(v) for v in pixel_rgb]
+        if abs(r - 255) + abs(g - 102) + abs(b - 0) < threshold:
+            return True
+        else:
+            return False
         
+    def detect_character_select(self):
+        img = self.grab()
+        if self.detect_white_pixel(img, 1020, 240): #Shirt on the longsword guy
+            if self.detect_red_pixel(img, 1080, 330): #Shirt on the longsword guy
+                if self.detect_orange_pixel(img, 1100, 859): #Shirt on the longsword guy
+                    print("Character select detected!")
+                    return True
+        return False
+    
+    def detect_main_menu(self):
+        white_pixels= [[605, 12], [980, 12], [1300,12]]
+        img = self.grab()
+        for pixel in white_pixels:
+            if not self.detect_white_pixel(img, pixel[0], pixel[1]):
+                return False
+            print("All white pixels detected!")
+        print("Main menu detected!")
+        return True
+
     def detect_game_over(self):
         yellow_pixels = [[540, 190], [1040, 470], [1570,700]]
         purple_pixels = [[600, 175], [970, 520], [1540,730]]

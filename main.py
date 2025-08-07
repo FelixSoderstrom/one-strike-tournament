@@ -58,10 +58,10 @@ def select_players():
 def get_contributions():
     """
     Gets all the contributions from the contributions dir.
-    Assumes each directory has a main.py file with an 'action' function.
+    Assumes each directory has a main.py file with 'action' and 'character_select' functions.
     
     Returns:
-        Dict: {directory_name: action_function}
+        Dict: {directory_name: {'action': action_function, 'character_select': character_select_function}}
     """  
     players = {}
     dir = 'contributions'
@@ -76,11 +76,14 @@ def get_contributions():
                     module = importlib.util.module_from_spec(spec)
                     spec.loader.exec_module(module)
                     
-                    # Get the action function from the module
-                    if hasattr(module, 'action'):
-                        players[bot] = module.action
+                    # Get both functions from the module
+                    if hasattr(module, 'action') and hasattr(module, 'character_select'):
+                        players[bot] = {
+                            'action': module.action,
+                            'character_select': module.character_select
+                        }
                     else:
-                        print(f"Warning: {bot} directory has no action function.")
+                        print(f"Warning: {bot} directory missing action or character_select function.")
     
     return players
 
