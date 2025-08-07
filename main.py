@@ -8,6 +8,7 @@ import time
 from src.controller import Controller
 from src.screen_capturer import WindowCapture
 from src.game_loop import GameLoop
+from src.player import Player
 
 
 
@@ -36,7 +37,11 @@ def menu():
 
 
 def start_game():
-    (p1, p2) = select_players()
+    (p1_func, p2_func) = select_players()
+    controller1 = Controller(gamepad_id=1)
+    controller2 = Controller(gamepad_id=2)
+    p1 = Player(p1_func, controller1)
+    p2 = Player(p2_func, controller2)
     game_loop = GameLoop(p1, p2)
     game_loop.idle_loop()
     
@@ -107,7 +112,7 @@ def initiate_controller_test():
         p2.read()
         time.sleep(1)
         p1.test_release_button("a")
-        p2.test_release_button("a")
+        p2.test_release_button("a" )
         p1.read()
         p2.read()
         print("Controllers initialized successfully.")

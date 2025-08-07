@@ -10,7 +10,6 @@ class GameLoop:
         self.p1 = p1
         self.p2 = p2
 
-        self.controller = Controller()
         self.screen_capturer = WindowCapture(title="One Strike")
         self.game_over_detector = self.screen_capturer.detect_game_over
 
