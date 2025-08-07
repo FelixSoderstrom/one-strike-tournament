@@ -47,7 +47,7 @@ class WindowCapture():
         if abs(r - 228) + abs(g - 255) + abs(b - 0) < threshold:
             return True
         
-    def detect_round_over(self):
+    def detect_game_over(self):
         yellow_pixels = [[540, 190], [1040, 470], [1570,700]]
         purple_pixels = [[600, 175], [970, 520], [1540,730]]
         img = self.grab()
@@ -61,11 +61,11 @@ class WindowCapture():
         print("Round over!")
         return True
 
-    def detect_game_over(self):
+    def detect_round_over(self):
         pixels_of_interest = [[530, 400], [1380, 270], [970,370]]
         img = self.grab()
         for pixel in pixels_of_interest:
-            if not self.detect_purple_pixel(img, pixel[0], pixel[1]):
+            if not self.detect_red_pixel(img, pixel[0], pixel[1]):
                 return False
         print("Game Over detected at all pixels")
         return True
