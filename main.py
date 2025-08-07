@@ -10,13 +10,12 @@ from src.screen_capturer import WindowCapture
 from src.game_loop import GameLoop
 
 
-cap = WindowCapture("Firefox")
 
 def main():
     routes = {
         "1": start_game,
         "2": show_contributions,
-        "3": exit
+        "3": exit,
     }
     routes[menu()]()
 
@@ -27,6 +26,7 @@ def menu():
         print("1. Start Game")
         print("2. Show Contributions")
         print("3. Exit")
+        print("4. Controller Test")
         print("-"*50)
         selection = input("Enter your selection: ")
         if selection in ["1", "2", "3"]:
@@ -80,6 +80,7 @@ def get_contributions():
     return players
 
 
+
 def display_players(contributions: dict[str, type]):
     while True:
         for i, k in enumerate(contributions.keys()):
@@ -96,6 +97,23 @@ def display_players(contributions: dict[str, type]):
     key = list(contributions.keys())[choice]
     return contributions[key]
 
+def initiate_controller_test():
+    try:
+        p1 = Controller(gamepad_id=1)
+        p2 = Controller(gamepad_id=2)
+        p1.test_press_button("a")
+        p2.test_press_button("a")
+        p1.read()
+        p2.read()
+        time.sleep(1)
+        p1.test_release_button("a")
+        p2.test_release_button("a")
+        p1.read()
+        p2.read()
+        print("Controllers initialized successfully.")
+    except Exception as e:
+        print(f"Error initializing controllers: {e}")
+        return
 
 def show_contributions():
     print("Showing contributions...")
@@ -107,4 +125,5 @@ def exit():
 
 
 if __name__ == "__main__":
+    initiate_controller_test()
     main()
