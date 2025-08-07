@@ -24,6 +24,51 @@ class WindowCapture():
 
         else:
             raise NotImplementedError(f"Unsupported OS: {system}")
+    
+    def detect_red_pixel(self, img, x, y, threshold=250):
+        """
+        Detects if there is a red pixel in the image.
+        Returns True if a red pixel is found, otherwise False.
+        """
+        pixel_rgb = img[y, x]  # For pixel at (x, y)
+        if pixel_rgb[0] > threshold and pixel_rgb[1] < 10 and pixel_rgb[2] < 10:
+            return True
+        else:
+            return False
+    
+    def detect_purple_pixel(self, img, x, y, threshold=20):
+        pixel_rgb = img[y, x]  # For pixel at (x, y)
+        r, g, b = [int(v) for v in pixel_rgb]
+        if abs(r - 95) + abs(g - 0) + abs(b - 122) < threshold:
+            return True
+    def detect_yellow_pixel(self, img, x, y, threshold=20):
+        pixel_rgb = img[y, x]  # For pixel at (x, y)
+        r, g, b = [int(v) for v in pixel_rgb]
+        if abs(r - 228) + abs(g - 255) + abs(b - 0) < threshold:
+            return True
+        
+    def detect_round_over(self):
+        yellow_pixels = [[540, 190], [1040, 470], [1570,700]]
+        purple_pixels = [[600, 175], [970, 520], [1540,730]]
+        img = self.grab()
+        for pixel in yellow_pixels:
+            if not self.detect_yellow_pixel(img, pixel[0], pixel[1]):
+                return False
+            print("All yellow pixels detected!")
+            for pixel in purple_pixels:
+                if not self.detect_purple_pixel(img, pixel[0], pixel[1]):
+                    return False
+        print("Round over!")
+        return True
+
+    def detect_game_over(self):
+        pixels_of_interest = [[530, 400], [1380, 270], [970,370]]
+        img = self.grab()
+        for pixel in pixels_of_interest:
+            if not self.detect_purple_pixel(img, pixel[0], pixel[1]):
+                return False
+        print("Game Over detected at all pixels")
+        return True
 
     def get_window_bbox_linux(self, title):
         # get window ids matching title

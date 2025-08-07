@@ -11,7 +11,8 @@ class GameLoop:
         self.p2 = p2
 
         self.controller = Controller()
-        self.screen_capturer = WindowCapture(title="Discord")
+        self.screen_capturer = WindowCapture(title="One Strike")
+        self.game_over_detector = self.screen_capturer.detect_game_over
 
         self.running = False
         self.game_over = False
@@ -20,13 +21,12 @@ class GameLoop:
 
     def idle_loop(self):
         while True:
+            self.game_over = self.game_over_detector()
+
             if self.game_over:
-                print("Game state is over. Exiting...")
-                sys.exit()
+                print("Game over detected!")
 
             self.screen = self.screen_capturer.grab()
-            print(self.screen)
-            print("One screen was put through")
             sleep(1)
 
             if self.running:

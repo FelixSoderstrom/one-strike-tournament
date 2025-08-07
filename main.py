@@ -10,7 +10,7 @@ from src.screen_capturer import WindowCapture
 from src.game_loop import GameLoop
 
 
-cap = WindowCapture("Discord")
+cap = WindowCapture("Firefox")
 
 def main():
     routes = {
