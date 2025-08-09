@@ -37,11 +37,11 @@ def menu():
 
 
 def start_game():
-    (p1_func, p2_func) = select_players()
+    (bot1_data, bot2_data) = select_players()
     controller1 = Controller(gamepad_id=1)
     controller2 = Controller(gamepad_id=2)
-    p1 = Player(p1_func, controller1)
-    p2 = Player(p2_func, controller2)
+    p1 = Player(bot1_data, controller1)
+    p2 = Player(bot2_data, controller2)
     game_loop = GameLoop(p1, p2)
     game_loop.idle_loop()
     
@@ -80,6 +80,7 @@ def get_contributions():
                     if hasattr(module, 'action'):
                         players[bot] = {
                             'action': module.action,
+                            'character': getattr(module, 'CHARACTER_CHOICE', None) 
                         }
                     else:
                         print(f"Warning: {bot} directory missing action function.")

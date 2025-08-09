@@ -7,3 +7,5 @@ def action():
         "L": False,
         "R": False,
     }
+
+CHARACTER_CHOICE = "Bailong"
