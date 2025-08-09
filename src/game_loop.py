@@ -35,12 +35,13 @@ class GameLoop:
 
 
     def navigate_menu(self):
-        if self.current_state == "main_menu":
-            self.p1.from_main_menu_to_character_select()
-        elif self.current_state == "character_select":
-            self.p1.from_character_select_to_game()
-        elif self.current_state == "game_over":
-            self.p1.from_game_over_to_main_menu()
+        while not self.running:
+            if self.current_state == "main_menu":
+                self.p1.from_main_menu_to_character_select()
+                self.current_state = "character_select"
+            elif self.current_state == "character_select":
+                self.p1.from_character_select_to_game()
+                self.p2.from_character_select_to_game()
 
 
         

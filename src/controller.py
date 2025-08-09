@@ -13,6 +13,8 @@ class Controller:
         self.button_map =  {
                 "left": vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_LEFT,
                 "right": vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_RIGHT,
+                "up": vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_UP,
+                "down": vg.XUSB_BUTTON.XUSB_GAMEPAD_DPAD_DOWN,
                 "a": vg.XUSB_BUTTON.XUSB_GAMEPAD_A,
                 "b": vg.XUSB_BUTTON.XUSB_GAMEPAD_B,
                 "L": vg.XUSB_BUTTON.XUSB_GAMEPAD_LEFT_SHOULDER,
@@ -21,6 +23,8 @@ class Controller:
         self.button_states = {
             "left": False,
             "right": False,
+            "up": False,
+            "down": False,
             "a": False,
             "b": False,
             "L": False,
