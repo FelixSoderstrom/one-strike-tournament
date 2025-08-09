@@ -77,13 +77,12 @@ def get_contributions():
                     spec.loader.exec_module(module)
                     
                     # Get both functions from the module
-                    if hasattr(module, 'action') and hasattr(module, 'character_select'):
+                    if hasattr(module, 'action'):
                         players[bot] = {
                             'action': module.action,
-                            'character_select': module.character_select
                         }
                     else:
-                        print(f"Warning: {bot} directory missing action or character_select function.")
+                        print(f"Warning: {bot} directory missing action function.")
     
     return players
 

@@ -17,31 +17,30 @@ class GameLoop:
         self.game_over = False
         self.current_state = None 
 
+    def _detect_game_state(self):
+        if self.screen_capturer.detect_main_menu():
+            self.current_state = "main_menu"
+        elif self.screen_capturer.detect_character_select():
+            self.current_state = "character_select"
+        elif self.screen_capturer.detect_game_over():
+            self.current_state = "game_over"
 
     def idle_loop(self):
-        while True:
-            self.game_over = self.game_over_detector()
-
-            if self.game_over:
-                print("Game over detected!")
-
-            self.screen = self.screen_capturer.grab()
+        print("idle loop")
+        while self.current_state == None:
+            print("idle loooooop")
+            self._detect_game_state()
             sleep(1)
+        self.navigate_menu()
 
-            if self.running:
-                asyncio.run(self._active_loop())
 
     def navigate_menu(self):
-        while self.current_state != "character_select":
-            if self.screen_capturer.detect_main_menu():
-                self.controller.from_main_menu_to_character_select()
-                if self.screen_capturer.detect_character_select():
-                    self.current_state = "character_select"
-            elif self.screen_capturer.detect_character_select():
-                self.current_state = "character_select"
-            else:
-                print("Unknown screen detected: moving to main menu")
-                self.controller.from_unknown_screen_to_main_menu()
+        if self.current_state == "main_menu":
+            self.p1.from_main_menu_to_character_select()
+        elif self.current_state == "character_select":
+            self.p1.from_character_select_to_game()
+        elif self.current_state == "game_over":
+            self.p1.from_game_over_to_main_menu()
 
 
         
@@ -75,16 +74,14 @@ class CharacterSelector:
     @staticmethod
     def navigate_to_character(self, target_character, controller, player_position):
         moves = CharacterSelector._get_character_navigation(target_character, player_position)
-        CharacterSelector._execute_move_sequence(moves, controller)
-        controller.press_button("a")
-
-    @staticmethod
-    def _execute_move_sequence(self, moves, controller):
         for move in moves:
             controller.press_button(move)
             time.sleep(0.05)
             controller.release_button(move)
             time.sleep(0.05)
+
+        controller.press_button("a")
+
 
     @staticmethod
     def _get_character_navigation(self, target_character, player_position):

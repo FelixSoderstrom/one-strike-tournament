@@ -31,10 +31,9 @@ class WindowCapture():
         Returns True if a red pixel is found, otherwise False.
         """
         pixel_rgb = img[y, x]  # For pixel at (x, y)
-        if pixel_rgb[0] > threshold and pixel_rgb[1] < 10 and pixel_rgb[2] < 10:
+        r, g, b = [int(v) for v in pixel_rgb]
+        if abs(r - 255) + abs(g - 0) + abs(b - 0) < threshold:
             return True
-        else:
-            return False
     
     def detect_purple_pixel(self, img, x, y, threshold=20):
         pixel_rgb = img[y, x]  # For pixel at (x, y)
@@ -66,19 +65,18 @@ class WindowCapture():
     def detect_character_select(self):
         img = self.grab()
         if self.detect_white_pixel(img, 1020, 240): #Shirt on the longsword guy
-            if self.detect_red_pixel(img, 1080, 330): #Shirt on the longsword guy
-                if self.detect_orange_pixel(img, 1100, 859): #Shirt on the longsword guy
+            if self.detect_red_pixel(img, 1080, 330): #Red hat
+                if self.detect_orange_pixel(img, 1100, 859): #Question mark
                     print("Character select detected!")
                     return True
         return False
     
     def detect_main_menu(self):
-        white_pixels= [[605, 12], [980, 12], [1300,12]]
+        white_pixels= [[650, 10], [980, 10], [1300,10]]
         img = self.grab()
         for pixel in white_pixels:
             if not self.detect_white_pixel(img, pixel[0], pixel[1]):
                 return False
-            print("All white pixels detected!")
         print("Main menu detected!")
         return True
 
